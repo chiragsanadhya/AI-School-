@@ -23,6 +23,7 @@ secrets.json
 # Logs and Debugging files
 logs/
 *.log
+debug.log
 
 # Database and migrations (if applicable)
 *.sqlite3
@@ -52,6 +53,8 @@ model/
 models/
 saved_models/
 *.tflite
+*.ckpt
+*.npy
 
 # LangChain-specific
 .vectorstore/
@@ -75,3 +78,20 @@ dist/
 docker-compose.override.yml
 docker-compose.yml
 .dockerignore
+
+# Python Test and Cache Files
+.pytest_cache/
+.coverage
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+*.pyc
+
+# Ignore Large Data Files
+data/
+*.csv
+*.tsv
+*.jsonl
+*.parquet
+*.pdf  # Ignore large PDF files
