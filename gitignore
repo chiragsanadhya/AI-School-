@@ -1,0 +1,77 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# Environment variables and secrets
+.env
+*.env
+config.json
+secrets.json
+
+# Logs and Debugging files
+logs/
+*.log
+
+# Database and migrations (if applicable)
+*.sqlite3
+db.sqlite3
+migrations/
+
+# Compiled files
+*.so
+*.out
+*.o
+*.a
+*.dll
+*.dylib
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Machine Learning / AI Related
+checkpoints/
+*.h5
+*.hdf5
+*.pb
+*.onnx
+*.pkl
+*.joblib
+model/
+models/
+saved_models/
+*.tflite
+
+# LangChain-specific
+.vectorstore/
+*.faiss
+*.jsonl  # If storing large JSON logs
+
+# Supabase (if using local storage)
+.supabase/
+
+# Node.js dependencies (if frontend involved)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Docker-related
+docker-compose.override.yml
+docker-compose.yml
+.dockerignore
