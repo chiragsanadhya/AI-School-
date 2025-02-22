@@ -1,10 +1,30 @@
-import fitz  # PyMuPDF for extracting text from PDFs
+import fitz  
 import numpy as np
-import faiss
+import os
+from dotenv import load_dotenv
 from langchain_ollama import OllamaEmbeddings
+from langchain_community.vectorstores import SupabaseVectorStore
+from langchain_core.documents import Document
+from supabase import create_client, Client
 
-# Initialize Ollama Embeddings
-embedding_model = OllamaEmbeddings(model="llama3")
+# Load environment variables from .env file
+load_dotenv()
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+# Initialize Supabase Client
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# Initialize Ollama Embeddings (Local)
+embedding_model = OllamaEmbeddings(model="nomic-embed-text")
+
+# Initialize Supabase Vector Store
+vector_store = SupabaseVectorStore(
+    client=supabase,
+    table_name="documents",  # Ensure this table exists in Supabase
+    embedding=embedding_model
+)
 
 def load_pdf(file_path: str) -> str:
     """Extract text from a PDF file."""
@@ -17,27 +37,19 @@ def chunk_text(text: str, chunk_size: int = 500) -> list:
     words = text.split()
     return [" ".join(words[i:i+chunk_size]) for i in range(0, len(words), chunk_size)]
 
-def get_ollama_embeddings(texts: list) -> list[np.array]:
-    """Generate embeddings using LangChain's OllamaEmbeddings."""
-    return [np.array(embedding_model.embed_query(text)) for text in texts]
-
-def store_embeddings(embeddings: list[np.array]):
-    """Save embeddings in FAISS vector database."""
-    d = len(embeddings[0])  # Embedding dimension
-    index = faiss.IndexFlatL2(d)
-    index.add(np.array(embeddings))
-
-    # Save FAISS index
-    faiss.write_index(index, "ml/embeddings/faiss_index")
-
 def embed_pdf(file_path: str):
-    """Processes a PDF file, generates embeddings via Ollama, and stores them."""
+    """Processes a PDF file, generates embeddings via Ollama, and stores them in Supabase."""
     text = load_pdf(file_path)
     chunks = chunk_text(text)
-    embeddings = get_ollama_embeddings(chunks)
-    store_embeddings(embeddings)
-    print(f"✅ Embeddings stored successfully for {file_path}")
+    
+    # Convert text chunks into LangChain Document objects
+    docs = [Document(page_content=chunk) for chunk in chunks]
+    
+    # Store embeddings in Supabase Vector Store
+    vector_store.add_documents(docs)
+    
+    print(f" Embeddings stored for {file_path}")
 
 # Example usage
 if __name__ == "__main__":
-    embed_pdf("data/sample_chapter.pdf")
+    embed_pdf("/Users/chira/Desktop/NECESSITY/projects/AI_School/data/NCERT-Class-9-English-The-Bond-of-Love.pdf")
