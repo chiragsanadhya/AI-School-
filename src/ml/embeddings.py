@@ -1,3 +1,94 @@
+# Steps for Creating embeddings.py
+# 1. Set Up Environment Variables
+
+# Add Supabase keys (SUPABASE_URL, SUPABASE_KEY) to the .env file.
+# Ensure Ollama is installed and running locally to generate embeddings.
+
+
+
+# 2. Import Required Libraries
+
+# fitz (PyMuPDF) for extracting text from PDFs.
+# numpy for handling numerical operations.
+# os and dotenv for loading environment variables.
+# OllamaEmbeddings for generating embeddings using Ollama.
+# SupabaseVectorStore for storing embeddings in Supabase.
+# Document from langchain_core.documents to structure text for vector storage.
+# supabase.create_client to connect to the Supabase database.
+
+
+
+# 3. Initialize Supabase and Ollama
+
+# Use create_client(SUPABASE_URL, SUPABASE_KEY) to connect to Supabase.
+# Initialize OllamaEmbeddings(model="nomic-embed-text") to use Ollama locally.
+# Set up SupabaseVectorStore with Supabase client and embeddings.
+
+
+
+# 4. Load and Process PDF
+
+# Define load_pdf(file_path) to extract text from a PDF using fitz.open(file_path).
+# Define chunk_text(text, chunk_size=500) to split text into smaller parts for embedding.
+
+
+
+# 5. Generate and Store Embeddings
+
+# Define embed_pdf(file_path):
+# Extract text from the PDF.
+# Chunk the text.
+# Convert chunks into Document objects.
+# Store embeddings in Supabase using vector_store.add_documents(docs).
+
+
+
+# 6. Debugging and Issues Faced
+
+# Match-making in Supabase: Initially, Supabase similarity search did not return results correctly due to missing embeddings or incorrect table schema. Fixed by ensuring embeddings were stored properly and indexing was enabled.
+# Ollama Performance: Needed to ensure Ollama was running locally before embedding generation.
+# Chunking Optimization: Experimented with different chunk sizes (default: 500 words) to balance embedding quality and storage efficiency.
+
+
+
+# 7. Execution and Testing
+
+# Added an if __name__ == "__main__" block to call embed_pdf() with a sample PDF path.
+# Tested storing and retrieving embeddings from Supabase.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import fitz  
 import os
 from dotenv import load_dotenv

@@ -1,6 +1,15 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
+from src.core.config import settings
 
-DATABASE_URL = "postgresql://postgres.riehvfvowzyqkuvgcvgy:piqxix-xamze8-kohwiD@aws-0-ap-south-1.pooler.supabase.com:6543/postgres"
+# Use DATABASE_URL from config.py (which reads from .env)
+DATABASE_URL = settings.DATABASE_URL
+
+# Create database engine
 engine = create_engine(DATABASE_URL)
+
+# Create a session factory
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+
+# Define Base class for models
+Base = declarative_base()
