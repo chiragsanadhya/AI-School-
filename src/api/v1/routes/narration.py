@@ -12,21 +12,14 @@ if not GROQ_API_KEY:
 text_processor = TextProcessor(api_key=GROQ_API_KEY)
 narrator = Narrator()
 
+# Fix: Add background tasks for audio processing
+from fastapi import BackgroundTasks
+
 @router.post("/narrate/")
-async def narrate(text: str, transform: bool = False):
-    """
-    Endpoint to generate narration.
-    - If `transform=True`, it will first process the text using Groq's LLM.
-    - Otherwise, it will directly generate the narration.
-    - The generated speech will play in real-time.
-    """
+async def narrate(text: str, background_tasks: BackgroundTasks, transform: bool = False):
     if not text:
         raise HTTPException(status_code=400, detail="Text cannot be empty")
-
-    # Apply transformation if required
+    
     processed_text = text_processor.transform(text) if transform else text
-
-    # Play narration
-    narrator.narrate(processed_text)
-
-    return {"message": "Narration played successfully"}
+    background_tasks.add_task(narrator.narrate, processed_text)
+    return {"message": "Narration queued successfully"}

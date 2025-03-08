@@ -2,19 +2,24 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from src.ml.rag import RAGChatbot
 
+# Define request model
+class QueryRequest(BaseModel):
+    question: str
+
 # Initialize FastAPI router
 router = APIRouter()
 
 # Load RAG chatbot instance
-chatbot = RAGChatbot()
-
-# Request model
-class QueryRequest(BaseModel):
-    question: str
+try:
+    chatbot = RAGChatbot()
+except Exception as e:
+    print(f"Warning: RAG Chatbot initialization failed: {e}")
+    chatbot = None
 
 @router.post("/chat")
-def chat_with_rag(query: QueryRequest):
-    """Handle user queries and return responses from the RAG chatbot."""
+async def chat_with_rag(query: QueryRequest):
+    if not chatbot:
+        raise HTTPException(status_code=503, detail="RAG service unavailable")
     try:
         response = chatbot.chat(query.question)
         return {"question": query.question, "answer": response}
