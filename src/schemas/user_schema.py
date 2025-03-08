@@ -1,24 +1,18 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
 
-class UserBase(BaseModel):
-    """Base schema for user details."""
+class UserCreate(BaseModel):
     username: str
     email: EmailStr
-
-class UserCreate(UserBase):
-    """Schema for creating a new user."""
     password: str
 
-class UserUpdate(BaseModel):
-    """Schema for updating user details."""
-    username: Optional[str] = None
-    email: Optional[EmailStr] = None
-    password: Optional[str] = None
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
-class UserResponse(UserBase):
-    """Schema for returning user details (without password)."""
+class UserResponse(BaseModel):
     id: int
+    username: str
+    email: EmailStr
 
     class Config:
         from_attributes = True
