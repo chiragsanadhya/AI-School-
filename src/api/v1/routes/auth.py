@@ -139,3 +139,7 @@ async def get_user_profile(current_user = Depends(get_current_user)):
         "email": current_user.email,
         "full_name": current_user.user_metadata.get("full_name")
     }
+
+@router.post("/verify-email")
+async def verify_email(token: str):
+    return await auth_service.verify_email(token)

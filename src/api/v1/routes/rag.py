@@ -9,6 +9,10 @@ class QueryRequest(BaseModel):
 # Initialize FastAPI router
 router = APIRouter()
 
+@router.get("/")
+async def get_rag():
+    return {"message": "RAG endpoint - Coming soon"}
+
 # Load RAG chatbot instance
 try:
     chatbot = RAGChatbot()
