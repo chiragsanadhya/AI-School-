@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from src.ml.test import SupabaseHandler, MCQGenerator
+from src.ml.test import SupabaseHandler, MCQGenerator  # Fixed import path
 import os
 
 router = APIRouter()
@@ -31,3 +31,7 @@ async def generate_mcq(request: TestRequest):
     
     mcqs = mcq_generator.generate_mcqs(context, request.num_questions)
     return {"topic": request.topic, "mcqs": mcqs}
+
+@router.get("/")
+async def run_test():
+    return {"message": "Test endpoint - Coming soon"}
