@@ -5,7 +5,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import SupabaseVectorStore
-from langchain_community.llms import Groq
+from langchain_groq import ChatGroq
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
@@ -39,7 +39,7 @@ class RAGChatbot:
         )
         
         # Initialize Groq LLM
-        self.llm = Groq(
+        self.llm = ChatGroq(
             api_key=os.getenv("GROQ_API_KEY", ""),
             model_name="llama3-8b-8192"
         )

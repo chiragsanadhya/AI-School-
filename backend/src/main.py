@@ -3,9 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import logging
 from pathlib import Path
+from src.auth.dependencies import get_current_user
+from src.auth.router import router as auth_router
+from src.learning.router import router as learning_router
 
-# Import routers
-from learning.router import router as learning_router
+
 
 # Configure logging
 logging.basicConfig(
@@ -44,6 +46,7 @@ app.mount("/static", StaticFiles(directory=str(UPLOAD_DIR)), name="static")
 
 # Include routers
 app.include_router(learning_router)
+app.include_router(auth_router)
 
 @app.get("/")
 async def root():
