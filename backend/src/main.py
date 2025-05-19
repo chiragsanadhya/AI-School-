@@ -6,8 +6,8 @@ from pathlib import Path
 from src.auth.dependencies import get_current_user
 from src.auth.router import router as auth_router
 from src.learning.router import router as learning_router
-
-
+from src.learning.progress_router import router as progress_router
+from src.auth.config import get_settings
 
 # Configure logging
 logging.basicConfig(
@@ -26,7 +26,11 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React frontend URL
+    allow_origins=[
+        "http://localhost:5173",  # Vite dev server
+        "http://127.0.0.1:5173",  # Vite dev server alternative
+        "http://localhost:3000",  # React dev server
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -44,9 +48,14 @@ for directory in [UPLOAD_DIR, PDF_DIR, EMBEDDINGS_DIR]:
 # Mount static files
 app.mount("/static", StaticFiles(directory=str(UPLOAD_DIR)), name="static")
 
+# Initialize settings
+settings = get_settings()
+logger.info("Initialized settings with Supabase configuration")
+
 # Include routers
 app.include_router(learning_router)
 app.include_router(auth_router)
+app.include_router(progress_router)
 
 @app.get("/")
 async def root():

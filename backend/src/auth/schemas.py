@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr, constr
+from typing import Optional
 
 
 class UserBase(BaseModel):
@@ -29,5 +30,5 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    user_id: str | None = None
-    email: str | None = None
+    user_id: Optional[str] = None
+    email: Optional[str] = None

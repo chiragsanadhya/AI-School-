@@ -6,6 +6,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Settings(BaseSettings):
+    # Database settings
+    database_url: str
+    
+    # Security settings
+    secret_key: str
+    
     # Supabase settings
     SUPABASE_URL: str
     SUPABASE_KEY: str

@@ -17,10 +17,10 @@ AUDIO_DIR.mkdir(exist_ok=True)
 PDF_DIR.mkdir(exist_ok=True)
 
 # Database settings
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:bhoomi#123@db.mbkzwmbutivszdlyzfcr.supabase.co:5432/postgres")
+DATABASE_URL = os.getenv("DATABASE_URL")  # Must be set in .env
 
 # Supabase settings
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://mbkzwmbutivszdlyzfcr.supabase.co")
+SUPABASE_URL = os.getenv("SUPABASE_URL")  # Must be set in .env
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")  # Must be set in .env
 
 # AI Model settings
@@ -38,7 +38,7 @@ VECTOR_QUERY_NAME = "match_documents"
 AUDIO_SAMPLE_RATE = 22050
 
 # Security settings
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here")  # Must be set in .env
+SECRET_KEY = os.getenv("SECRET_KEY")  # Must be set in .env
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
